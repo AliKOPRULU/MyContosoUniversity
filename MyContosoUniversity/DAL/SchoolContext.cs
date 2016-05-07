@@ -1,4 +1,5 @@
-﻿using MyContosoUniversity.Models;
+﻿using MyContosoUniversity.Migrations;
+using MyContosoUniversity.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,7 +13,7 @@ namespace MyContosoUniversity.DAL
     {//DataContext
         public SchoolContext() : base("SchoolContext")
         {//connection string bu olacak 
-
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<SchoolContext, Configuration>("SchoolContext"));
         }
 
         //entity (varlıklarını) burada tanımladık

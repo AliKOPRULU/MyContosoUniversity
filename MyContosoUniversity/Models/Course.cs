@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MyContosoUniversity.Models
 {
     public class Course
-    {        
+    {//Dersler
         [DatabaseGenerated(DatabaseGeneratedOption.None)]//veritabanı için bir değer oluşturulmaz
         public int CourseID { get; set; }
         public string Title { get; set; }
