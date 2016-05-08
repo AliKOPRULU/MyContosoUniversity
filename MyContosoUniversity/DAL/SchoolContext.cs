@@ -24,6 +24,8 @@ namespace MyContosoUniversity.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {//Tablo isimlerinin s takısı almasını engelledik
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //modelBuilder.Entity().HasRequired(d => d.Administrator).WithMany().WillCascadeOnDelete(false);//Modify the Enrollment Entity başlığının üstündeki yazıyı oku
+
         }
     }
 }

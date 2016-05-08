@@ -212,12 +212,19 @@
     <Compile Include="Migrations\201605070916161_ikinciekleme.Designer.cs">
       <DependentUpon>201605070916161_ikinciekleme.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605081248459_ikinciekleme1.cs" />
+    <Compile Include="Migrations\201605081248459_ikinciekleme1.Designer.cs">
+      <DependentUpon>201605081248459_ikinciekleme1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Enrollment.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OfficeAssignment.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -310,6 +317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605070916161_ikinciekleme.resx">
       <DependentUpon>201605070916161_ikinciekleme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605081248459_ikinciekleme1.resx">
+      <DependentUpon>201605081248459_ikinciekleme1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
