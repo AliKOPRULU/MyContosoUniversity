@@ -19,7 +19,7 @@ namespace MyContosoUniversity.Models
         public int Credits { get; set; }
 
         //Buradaki ilşki de  aslında yabancı anahtar ama foreignKey olarak belirtmek gerekmiyor.
-        public int DepartmantID { get; set; }//Bir Ders bir bölüme atanıyor.
+        public int DepartmentID { get; set; }//Bir Ders bir bölüme atanıyor.
         public virtual Department Department { get; set; }
 
         //Bir ders herhangi bir numarayla bir öğrenciye kayıt edilmiş olabilir.
