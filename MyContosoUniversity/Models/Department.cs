@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyContosoUniversity.Models
 {
-    public class Department
-    {//Bölüm
+    public class Department//Bir Bölümde birden fazla ders olabilir olarak alınmış
+    {//aslında bir ders birden fazla bölümdede olması lazım ama öyle alınmamış, bir ders sadece tek bölümde okutuluyor görünüyor
         public int DepartmentID { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
@@ -20,7 +20,7 @@ namespace MyContosoUniversity.Models
         public DateTime StartDate { get; set; }
 
         public int? InstructorID { get; set; }//Bölüme ait eğitmen olmayabilir.
-        public virtual Instructor Administrator { get; set; }//Yönetici her zaman eğitmendir
+        public virtual Instructor Administrator { get; set; }//Bölüm başkanı olarak ele alınmış, hocaları koymamış, yönetici her zaman eğitmendir
         public virtual ICollection<Course> Courses { get; set; }//Bir bölümde birden fazla ders olaibilir.
     }
 }
