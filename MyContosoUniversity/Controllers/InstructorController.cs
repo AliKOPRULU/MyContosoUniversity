@@ -17,12 +17,6 @@ namespace MyContosoUniversity.Controllers
     {
         private SchoolContext db = new SchoolContext();
 
-        // GET: Instructors
-        //public ActionResult Index()
-        //{
-        //    var instructors = db.Instructors.Include(i => i.OfficeAssignment);
-        //    return View(instructors.ToList());
-        //}
         public ActionResult Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData();
@@ -73,7 +67,9 @@ namespace MyContosoUniversity.Controllers
         // GET: Instructors/Create
         public ActionResult Create()
         {
-            ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location");
+            var instructor = new Instructor();
+            instructor.Courses = new List<Course>();
+            PopulateAssignedCourseData(instructor);
             return View();
         }
 
@@ -82,16 +78,24 @@ namespace MyContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LastName,FirstMidName,HireDate")] Instructor instructor)
+        public ActionResult Create([Bind(Include = "LastName,FirstMidName,HireDate,OfficeAssignment")] Instructor instructor, string[] selectedCourses)
         {
+            if (selectedCourses != null)
+            {
+                instructor.Courses = new List<Course>();
+                foreach (var course in selectedCourses)
+                {
+                    var courseToAdd = db.Courses.Find(int.Parse(course));
+                    instructor.Courses.Add(courseToAdd);
+                }
+            }
             if (ModelState.IsValid)
             {
                 db.Instructors.Add(instructor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location", instructor.ID);
+            PopulateAssignedCourseData(instructor);
             return View(instructor);
         }
 
@@ -108,16 +112,17 @@ namespace MyContosoUniversity.Controllers
                 .Include(i => i.Courses)
                 .Where(i => i.ID == id)
                 .Single();
+            PopulateAssignedCourseData(instructor);
             if (instructor == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location", instructor.ID);
+            //ViewBag.ID = new SelectList(db.OfficeAssignments, "InstructorID", "Location", instructor.ID);
             return View(instructor);
         }
 
         private void PopulateAssignedCourseData(Instructor instructor)
-        {//check box dizi şeklinde dersleri getireceğiz
+        {//check box dizi şeklinde dersleri getireceğiz. Sayfa ilk defa açıldığında var ise Kullanıcının seçtiği dersleri alıyoruz.
             var allCourses = db.Courses;
             var instructorCourses = new HashSet<int>(instructor.Courses.Select(c => c.CourseID));
             var viewModel = new List<AssignedCourseData>();
@@ -146,7 +151,7 @@ namespace MyContosoUniversity.Controllers
             }
             var instructorToUpdate = db.Instructors
                 .Include(i => i.OfficeAssignment)
-       .Include(i => i.Courses)
+                .Include(i => i.Courses)
                 .Where(i => i.ID == id)
                 .Single();
             if (TryUpdateModel(instructorToUpdate, "", new string[] { "LastName", "FirstMidName", "HireDate", "OfficeAssignment" }))
@@ -170,10 +175,11 @@ namespace MyContosoUniversity.Controllers
             PopulateAssignedCourseData(instructorToUpdate);
             return View(instructorToUpdate);
         }
+
         private void UpdateInstructorCourses(string[] selectedCourses, Instructor instructorToUpdate)
-        {//Seçili dersler checkbox ile kontrol edilecek
+        {//Seçili dersler checkbox ile kontrol edilecek            
             if (selectedCourses == null)
-            {//Seçili ders varmı yoksa boş ders listesi oluşturuluyor.
+            {//Seçili ders varmı yoksa boş ders listesi oluşturuluyor.                    
                 instructorToUpdate.Courses = new List<Course>();
                 return;
             }
@@ -182,23 +188,24 @@ namespace MyContosoUniversity.Controllers
             var instructorCourses = new HashSet<int>
                 (instructorToUpdate.Courses.Select(c => c.CourseID));
             foreach (var course in db.Courses)
-            {
+            {//Bütün dersleri getiriyor. 
                 if (selectedCoursesHS.Contains(course.CourseID.ToString()))
-                {
+                {//seçili kurslarla karşılaştırıyor
                     if (!instructorCourses.Contains(course.CourseID))
-                    {
+                    {//eğer seçili ders veritabanında yok seçili olarak görünmüyor ise eklenmek üzere instructorToUpdate'e gönderiliyor.
                         instructorToUpdate.Courses.Add(course);
                     }
                 }
                 else
-                {
+                {//eğer ders seçilmemiş ise 
                     if (instructorCourses.Contains(course.CourseID))
-                    {
+                    {//ve veritabanında seçili görünüyor ise silinmek üzere instructorToUpdate' gönderiliyor.
                         instructorToUpdate.Courses.Remove(course);
                     }
                 }
             }
         }
+
         // GET: Instructors/Delete/5
         public ActionResult Delete(int? id)
         {

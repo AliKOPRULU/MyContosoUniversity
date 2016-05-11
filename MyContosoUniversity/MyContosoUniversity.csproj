@@ -323,11 +323,6 @@
     <Content Include="Views\Course\Details.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
-    <Content Include="Views\Instructors\Create.cshtml" />
-    <Content Include="Views\Instructors\Delete.cshtml" />
-    <Content Include="Views\Instructors\Details.cshtml" />
-    <Content Include="Views\Instructors\Edit.cshtml" />
-    <Content Include="Views\Instructors\Index.cshtml" />
     <Content Include="Views\Instructor\Create.cshtml" />
     <Content Include="Views\Instructor\Delete.cshtml" />
     <Content Include="Views\Instructor\Details.cshtml" />
